@@ -1,6 +1,7 @@
-.content-strip {
+.content-strip, section {
   padding: $content-strip-padding-y $content-strip-padding-x;
   display: flex;
+  flex-flow: row wrap;
   justify-content: center;
   background-color: $mdc-theme-background;
   color: $mdc-theme-on-background;
@@ -9,6 +10,29 @@
   }
   .flex-item {
     width: $content-width;
+    columns: var(--column-width) var(--column-count);
+    column-gap: $content-strip-padding-x;
+    &.column {
+      .md-generated {
+        padding: $content-strip-padding-y-reduced 0 0 0;
+        &:last-of-type {
+          padding: $content-strip-padding-y-reduced 0;
+        }
+      }
+    }
+    .md-generated {
+      break-inside: avoid;
+      padding: $content-strip-padding-y 0 0 0;
+      @media (max-width: $breakpoint-mobile) {
+        padding: $content-strip-padding-bm-y 0 0 0;
+      }
+      &:last-of-type {
+        padding: $content-strip-padding-y 0;
+        @media (max-width: $breakpoint-mobile) {
+          padding: $content-strip-padding-bm-y 0;
+        }
+      }
+    }
   }
   h1, h2, h3, h4, h5, h6 {
     &, p, .mdc-button {
@@ -22,13 +46,21 @@
   p, .mdc-button {
     margin: calc(3 * #{$content-strip-item-margin-y}) $content-strip-item-margin-x;
   }
+  p {
+    @include mdc-typography(body1);
+  }
   ul {
     list-style-type: disc;
     padding-inline-start: 20px;
+    @include mdc-typography(body1);
   }
   ol {
     list-style-type: decimal;
     padding-inline-start: 20px;
+    @include mdc-typography(body1);
+  }
+  img {
+    max-width: calc(100% - 20px);
   }
   span.indent {
     padding-inline-start: 36px;
@@ -65,6 +97,10 @@
     }
     &:not(.mdc-button--outlined) {
       margin: 0 0 0 -15px;
+    }
+    &.md {
+      margin-top: calc(2 * #{$content-strip-item-margin-y});
+      margin-bottom: 0;
     }
   }
   &--primary {
@@ -117,13 +153,13 @@
   &--min-padding {
     padding: $content-strip-padding-y-min $content-strip-padding-x;
   }
-  &--no-bottom-padding {
+  &--no-bottom-padding, &:not(:last-of-type):not(.content-strip) {
     padding-bottom: 0;
   }
   &--center {
     text-align: center;
   }
-  &:not(.content-strip--no-bottom-padding) {
+  &:not(.content-strip--no-bottom-padding), &:last-of-type:not(.content-strip) {
     border-bottom: 1px solid $content-strip-background-bottom-border-color;
   }
   h1, .mdc-typography--headline4 {
@@ -191,4 +227,7 @@
       width: unset;
     }
   }
+}
+section:not(.content-strip--no-bottom-padding) {
+  border: none;
 }
